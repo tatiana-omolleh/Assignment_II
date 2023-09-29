@@ -45,10 +45,14 @@ class dbConn {
         }
     }
     
-    public function execute($sql){
-        $result = $this->connection->prepare($sql);
-        $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC)[0];
+    public function select($sql, $param = array()) {
+        try {
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute($param);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
+    
 }
-?>
